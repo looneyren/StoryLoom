@@ -1,6 +1,6 @@
 # 🧶 StoryLoom
 
-> 故事织机 - 专为动漫短片创作设计的AI增强工具，将原始剧本编织成完整的视觉制作方案，包括标准拍摄脚本、分镜头表和文生图提示词。
+> 故事织机 - 专为动漫短片创作设计的AI增强工具，将原始剧本编织成完整的视觉制作方案，支持分阶段执行和任务管理。
 
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -8,14 +8,15 @@
 
 ## ✨ 功能特性
 
-- 🎬 **剧本转换** - 将文学剧本转换为标准的影视拍摄脚本
-- 📝 **分镜头生成** - 按场次自动生成详细的分镜头表
-- 🎨 **文生图提示词** - 为每个镜头生成适合AI绘画的提示词
-- 🤖 **AI增强** - 支持OpenAI兼容API，提升转换质量
-- 🌐 **网络化创作** - 融入网感和二次创作，适合现代观众
-- 🎥 **导演思维** - 模拟专业导演的分镜思路
-- 📄 **Markdown输出** - 生成结构化的Markdown文档
-- ⚡ **简洁高效** - 专注核心功能，避免复杂度
+- 🎬 **智能剧本解析** - AI驱动的场景结构分析和对话识别
+- 👥 **角色智能提取** - 精准识别角色并生成详细人物档案和图像提示词
+- 📚 **故事概览生成** - AI分析生成故事主题、梗概和特色
+- 🎨 **自定义样式** - 支持用户自定义视觉风格，AI自动完善样式定义
+- 📝 **专业拍摄脚本** - 生成整合分镜设计的专业拍摄脚本
+- 🖼️ **Midjourney提示词** - 生成完整版(英文)、完整版(中文)、简单版提示词
+- 📋 **任务管理** - 分阶段执行，支持任务ID追踪和数据持久化
+- 🤖 **AI增强** - 支持OpenAI兼容API，智能分析剧本结构
+- ⚡ **高效批处理** - 分镜提示词批量生成，避免重复处理
 
 ## 🚀 快速开始
 
@@ -30,20 +31,59 @@ cd StoryLoom
 pip install -r requirements.txt
 ```
 
-### 基础使用
+### 🎯 分阶段执行（推荐）
 
+**第一步：主要分析**
 ```bash
-# 基础模式（不使用AI）
-python script_adapter.py examples/yyds.txt
+# 执行场景解析、角色提取、分镜设计
+python3 storyloom.py examples/yyds.txt --style=kyoani
 
-# 指定输出文件
-python script_adapter.py examples/yyds.txt -o my_project.md
+# 输出示例：
+# 📋 任务ID: abc12345
+# ✅ 主要分析完成！
 ```
 
-### AI增强模式
+**第二步：生成图像提示词（可选）**
+```bash
+# 使用返回的任务ID生成图像提示词
+python3 storyloom.py --generate-prompts abc12345
+
+# ✅ 图像提示词生成完成！
+```
+
+### 📁 输出结构
+
+```
+output/
+├── tasks/              # 任务信息
+│   └── abc12345.json   # 任务配置和状态
+└── abc12345/           # 任务输出目录
+    ├── scenes.json     # 场景数据
+    ├── characters.json # 角色数据  
+    ├── shots.json      # 分镜数据
+    ├── image_prompts.json    # 图像提示词数据
+    ├── main_report.md        # 主要分析报告
+    └── complete_report.md    # 完整制作方案
+```
+
+### 🤖 AI智能模式
 
 #### 环境变量配置（推荐）
 
+**方式1：使用 .env 文件**
+```bash
+# 复制示例配置文件
+cp .env.example .env
+
+# 编辑 .env 文件，填入您的API配置
+# 然后直接运行
+python3 storyloom.py examples/yyds.txt --style=ghibli
+
+# 使用自定义风格
+python3 storyloom.py examples/yyds.txt --style=custom
+```
+
+**方式2：系统环境变量**
 ```bash
 # OpenAI
 export OPENAI_API_KEY="your-openai-key"
@@ -61,7 +101,7 @@ export OPENAI_BASE_URL="https://www.dmxapi.com/v1"
 export OPENAI_MODEL_NAME="gpt-4o"
 
 # 运行工具
-python script_adapter.py examples/yyds.txt
+python3 storyloom.py examples/yyds.txt --style=shinkai
 ```
 
 #### 命令行参数
@@ -106,6 +146,17 @@ python script_adapter.py examples/yyds.txt \
 小明：和你在一起，哪里都很美。
 ```
 
+### 自定义风格示例
+
+```bash
+# 使用自定义风格，系统会提示您输入风格信息
+python3 storyloom.py examples/yyds.txt --style=custom
+
+# 系统提示：
+# 请输入您想要的视觉风格名称: 我的赛博朋克风格
+# 请简单描述您想要的视觉效果: 未来感的霓虹城市，高科技医院场景
+```
+
 ### 输出示例
 
 查看 [`examples/yyds_gpt4o_output.md`](examples/yyds_gpt4o_output.md) 了解完整的输出格式。
@@ -114,8 +165,11 @@ python script_adapter.py examples/yyds.txt \
 
 | 参数 | 说明 | 示例 |
 |------|------|------|
-| `input` | 输入剧本文件路径（必需） | `examples/yyds.txt` |
-| `-o, --output` | 输出Markdown文件路径 | `-o result.md` |
+| `input` | 输入剧本文件路径 | `examples/yyds.txt` |
+| `-o, --output-dir` | 输出目录路径 | `-o ./my_output` |
+| `--style` | 视觉风格（支持内置风格或custom） | `--style=ghibli` 或 `--style=custom` |
+| `--generate-prompts` | 为指定任务生成图像提示词 | `--generate-prompts abc12345` |
+| `--style-list` | 显示所有可用风格 | `--style-list` |
 | `--api-key` | OpenAI API密钥 | `--api-key sk-xxx` |
 | `--base-url` | API服务地址 | `--base-url https://api.example.com/v1` |
 | `--model` | 模型名称 | `--model gpt-4` |
@@ -159,17 +213,21 @@ python script_adapter.py examples/yyds.txt \
 
 ```
 StoryLoom/
-├── script_adapter.py      # 主程序
-├── requirements.txt       # 依赖列表
+├── storyloom.py          # 主程序入口
+├── script_adapter.py     # 兼容性脚本
+├── task_manager.py       # 任务管理器
+├── ai_service.py         # AI服务模块
+├── models.py             # 数据模型
+├── styles.py             # 视觉风格系统
+├── requirements.txt      # 依赖列表
+├── .env.example          # 环境变量示例
 ├── README.md             # 项目说明
-├── LICENSE               # 许可证
-├── .gitignore           # Git忽略文件
-├── examples/            # 示例文件
-│   ├── yyds.txt        # 示例小说
-│   └── yyds_gpt4o_output.md  # 示例输出
-└── docs/               # 文档
-    ├── PRD.md         # 产品需求文档
-    └── PROMPT.md      # 提示词文档
+├── examples/             # 示例文件
+│   ├── yyds.txt         # 示例剧本
+│   └── *.md             # 示例输出
+└── output/               # 输出目录
+    ├── tasks/           # 任务信息
+    └── [task_id]/       # 任务结果
 ```
 
 ## 🎯 适用场景
@@ -199,6 +257,8 @@ graph LR
 3. **模型选择** - 更高级的模型（如GPT-4）能提供更好的网感和创意
 4. **API限制** - 注意API调用频率和token限制
 5. **文件编码** - 确保文本文件使用UTF-8编码
+6. **自定义风格** - 使用`--style=custom`时会提示输入风格信息，AI会自动完善风格定义
+7. **分阶段执行** - 推荐先运行主分析，再根据需要生成图像提示词以节省资源
 
 ## 🤝 贡献指南
 
