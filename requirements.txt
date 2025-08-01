@@ -1,0 +1,39 @@
+# Core AI API client
+openai>=1.0.0,<2.0.0
+
+# Command line argument parsing (built-in, but ensuring compatibility)
+# argparse is built into Python 3.2+
+
+# Data structures and type hints (built-in for Python 3.7+)
+# typing is built into Python 3.5+
+# dataclasses is built into Python 3.7+
+
+# Operating system interface (built-in)
+# os is built into Python
+
+# Regular expressions (built-in)
+# re is built into Python
+
+# Date and time handling (built-in)
+# datetime is built into Python
+
+# JSON handling (built-in)
+# json is built into Python
+
+#
+# Development dependencies (optional)
+#
+
+# Code formatting
+# black>=22.0.0
+
+# Linting
+# pylint>=2.0.0
+# flake8>=4.0.0
+
+# Type checking
+# mypy>=0.900
+
+# Testing
+# pytest>=6.0.0
+# pytest-cov>=3.0.0

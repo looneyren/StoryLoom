@@ -1,0 +1,3 @@
+## Project Characteristics
+
+- °UyîSM„;y
