@@ -80,7 +80,7 @@ cp .env.example .env
 python3 storyloom.py examples/yyds.txt --style=ghibli
 
 # 使用自定义风格
-python3 storyloom.py examples/yyds.txt --style=custom
+python3 storyloom.py examples/yyds.txt --custom-style="赛博朋克:未来主义科幻风格，霓虹灯效果，暗色调"
 ```
 
 **方式2：系统环境变量**
@@ -108,20 +108,21 @@ python3 storyloom.py examples/yyds.txt --style=shinkai
 
 ```bash
 # 使用OpenAI API
-python script_adapter.py examples/yyds.txt --api-key your-key
+python3 storyloom.py examples/yyds.txt --api-key your-key
 
 # 使用其他兼容OpenAI的服务
-python script_adapter.py examples/yyds.txt \
+python3 storyloom.py examples/yyds.txt \
     --api-key your-key \
     --base-url https://api.example.com/v1 \
     --model gpt-4
 
-# 完整示例
-python script_adapter.py examples/yyds.txt \
+# 使用自定义风格的完整示例
+python3 storyloom.py examples/yyds.txt \
+    --custom-style="赛博朋克:未来主义科幻风格，霓虹灯效果，暗色调" \
     --api-key your-key \
     --base-url https://www.dmxapi.com/v1 \
     --model gpt-4o \
-    -o output/result.md
+    -o output/result
 ```
 
 ## 📖 使用示例
@@ -149,12 +150,12 @@ python script_adapter.py examples/yyds.txt \
 ### 自定义风格示例
 
 ```bash
-# 使用自定义风格，系统会提示您输入风格信息
-python3 storyloom.py examples/yyds.txt --style=custom
+# 使用自定义风格，格式为 "名称:描述"
+python3 storyloom.py examples/yyds.txt --custom-style="赛博朋克:未来主义科幻风格，霓虹灯效果，暗色调"
 
-# 系统提示：
-# 请输入您想要的视觉风格名称: 我的赛博朋克风格
-# 请简单描述您想要的视觉效果: 未来感的霓虹城市，高科技医院场景
+# 更多示例：
+python3 storyloom.py examples/yyds.txt --custom-style="温馨日常:温暖的日系风格，柔和光线，治愈系色彩"
+python3 storyloom.py examples/yyds.txt --custom-style="奇幻冒险:魔法世界风格，绚丽特效，史诗级场景"
 ```
 
 ### 输出示例
@@ -167,7 +168,8 @@ python3 storyloom.py examples/yyds.txt --style=custom
 |------|------|------|
 | `input` | 输入剧本文件路径 | `examples/yyds.txt` |
 | `-o, --output-dir` | 输出目录路径 | `-o ./my_output` |
-| `--style` | 视觉风格（支持内置风格或custom） | `--style=ghibli` 或 `--style=custom` |
+| `--style` | 视觉风格（内置风格） | `--style=ghibli` |
+| `--custom-style` | 自定义风格（格式："名称:描述"） | `--custom-style="赛博朋克:未来主义风格"` |
 | `--generate-prompts` | 为指定任务生成图像提示词 | `--generate-prompts abc12345` |
 | `--style-list` | 显示所有可用风格 | `--style-list` |
 | `--api-key` | OpenAI API密钥 | `--api-key sk-xxx` |
@@ -257,7 +259,7 @@ graph LR
 3. **模型选择** - 更高级的模型（如GPT-4）能提供更好的网感和创意
 4. **API限制** - 注意API调用频率和token限制
 5. **文件编码** - 确保文本文件使用UTF-8编码
-6. **自定义风格** - 使用`--style=custom`时会提示输入风格信息，AI会自动完善风格定义
+6. **自定义风格** - 使用`--custom-style="名称:描述"`格式定义风格，AI会自动完善风格定义
 7. **分阶段执行** - 推荐先运行主分析，再根据需要生成图像提示词以节省资源
 
 ## 🤝 贡献指南
